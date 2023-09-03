@@ -26,8 +26,8 @@ app.use('/api/users', usersRouter)
 // })
 
 export let db:Db;
-establishDBConnection().then((db:Db) => {
-    db = db
+establishDBConnection().then((db1:Db) => {
+    db = db1
     app.listen(8000, () => {
         console.log('server is running')
     })

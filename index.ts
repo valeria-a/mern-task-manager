@@ -3,6 +3,13 @@ import { requestMiddleware } from "./middleware/common";
 import { tasksRouter } from "./routes/tasks";
 import { usersRouter } from "./routes/users";
 
+import dotenv from 'dotenv'
+dotenv.config()
+
+import { establishDBConnection } from "./dal/connection";
+import { Db } from "mongodb";
+
+
 
 const app:Express = express()
 
@@ -18,8 +25,13 @@ app.use('/api/users', usersRouter)
 //     })
 // })
 
-
-
-app.listen(8000, () => {
-    console.log('server is running')
+export let db:Db;
+establishDBConnection().then((db:Db) => {
+    db = db
+    app.listen(8000, () => {
+        console.log('server is running')
+    })
+}).catch((error) => {
+    console.error('Could not start server - failed to connect to DB', error)
 })
+

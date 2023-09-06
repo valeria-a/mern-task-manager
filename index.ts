@@ -12,6 +12,7 @@ dotenv.config()
 
 import { establishDBConnection } from "./dal/connection";
 import { Db } from "mongodb";
+import { validateJwtMiddleware } from "./middleware/auth";
 
 
 
@@ -22,12 +23,13 @@ app.use(helmet())
 app.use(compression())
 app.use(express.json())
 
-
 app.use(requestMiddleware)
 
-
-app.use('/api/tasks', tasksRouter)
 app.use('/api/users', usersRouter)
+
+
+app.use(validateJwtMiddleware)
+app.use('/api/tasks', tasksRouter)
 
 // app.get('/test', (req: Request, res: Response, next: NextFunction) => {
 //     // console.log('req:', req)

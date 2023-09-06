@@ -2,6 +2,10 @@ import express, { Express, NextFunction, Request, Response } from "express";
 import { requestMiddleware } from "./middleware/common";
 import { tasksRouter } from "./routes/tasks";
 import { usersRouter } from "./routes/users";
+import cors from 'cors';
+import helmet from 'helmet';
+import compression from 'compression';
+
 
 import dotenv from 'dotenv'
 dotenv.config()
@@ -13,7 +17,14 @@ import { Db } from "mongodb";
 
 const app:Express = express()
 
+app.use(cors())
+app.use(helmet())
+app.use(compression())
+app.use(express.json())
+
+
 app.use(requestMiddleware)
+
 
 app.use('/api/tasks', tasksRouter)
 app.use('/api/users', usersRouter)

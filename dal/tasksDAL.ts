@@ -1,4 +1,4 @@
-import { Collection } from "mongodb"
+import { Collection, InsertOneResult, ObjectId } from "mongodb"
 import { db } from ".."
 import { ITask } from "../interfaces/task"
 
@@ -19,4 +19,17 @@ export const getUserTasks = async (userId:string): Promise<Array<ITask>> => {
         })
     }
     return tasks
+}
+
+
+export const createTask = async (task:ITask) => {
+    const tasksCollection: Collection = db.collection('tasks')
+    const result: InsertOneResult = await tasksCollection.insertOne(task)
+    return result
+}
+
+export const getTaskById = async(taskId: ObjectId) => {
+    const tasksCollection: Collection = db.collection('tasks')
+    const res = await tasksCollection.findOne({_id: taskId})
+    return res
 }

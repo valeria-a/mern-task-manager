@@ -1,4 +1,5 @@
-import { getUserTasks } from "../dal/tasksDAL"
+import { InsertOneResult } from "mongodb"
+import { createTask, getUserTasks, getTaskById } from "../dal/tasksDAL"
 import { ITask } from "../interfaces/task"
 
 export const getUserTasksHandler = async (userId: string): Promise<Array<ITask>> => {
@@ -6,6 +7,8 @@ export const getUserTasksHandler = async (userId: string): Promise<Array<ITask>>
     return tasks
 }
 
-export const createTaskHandler = (taskData: ITask) => {
-    
+export const createTaskHandler = async (taskData: ITask) => {
+    const insertResult:InsertOneResult = await createTask(taskData)
+    const newTask = await getTaskById(insertResult.insertedId)
+    return newTask
 }
